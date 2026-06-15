@@ -1,1279 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thilina Prasad | BI & Data Engineer</title>
- 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
- 
-  <style>
-    :root {
-      --bg: #060c14;
-      --surface: #0a1220;
-      --surface2: #0f1c2e;
-      --border: rgba(40,90,160,0.18);
-      --text: #ddeeff;
-      --muted: #6a8aaa;
-      --navy: #1a3a6e;
-      --navy-light: #2457a4;
-      --green-dark: #0d3d26;
-      --green-mid: #155e38;
-      --green-light: #1e8a50;
-    }
- 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
- 
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow-x: hidden;
-      padding: 20px 0;
-    }
- 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 800px 600px at 15% 25%, rgba(26,58,110,0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 600px 500px at 85% 75%, rgba(13,61,38,0.15) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
-    }
- 
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(36,87,164,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(36,87,164,0.04) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
-    }
- 
-    .card {
-      position: relative;
-      z-index: 2;
-      width: 440px;
-      max-width: 94%;
-      padding: 36px 32px 28px;
-      border-radius: 24px;
-      background: rgba(8,14,24,0.93);
-      border: 1px solid rgba(36,87,164,0.22);
-      backdrop-filter: blur(28px);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.03),
-        0 20px 60px rgba(0,0,0,0.65),
-        0 0 90px rgba(26,58,110,0.12);
-      text-align: center;
-      animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-      transition: filter 0.3s ease;
-    }
- 
-    .card.blurred {
-      filter: blur(6px) brightness(0.5);
-      pointer-events: none;
-      user-select: none;
-    }
- 
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(30px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0)   scale(1);    }
-    }
- 
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 30px; right: 30px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(36,87,164,0.7), rgba(30,138,80,0.6), transparent);
-      border-radius: 999px;
-    }
- 
-    .avatar-wrap {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 18px;
-    }
- 
-    .avatar-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #1a3a6e, #2457a4, #0d3d26, #1e8a50, #2457a4);
-      z-index: -1;
-      animation: spin 6s linear infinite;
-    }
- 
-    @keyframes spin { to { transform: rotate(360deg); } }
- 
-    .avatar-wrap::after {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1px solid rgba(36,87,164,0.22);
-    }
- 
-    .profile {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--bg);
-      display: block;
-    }
- 
-    .status {
-      position: absolute;
-      bottom: 5px; right: 5px;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: #22c55e;
-      border: 2px solid var(--bg);
-      box-shadow: 0 0 8px rgba(34,197,94,0.6);
-    }
- 
-    h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      margin-bottom: 6px;
-      background: linear-gradient(135deg, #e8edf5 40%, #a5b8d8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
- 
-    .role {
-      color: var(--muted);
-      font-size: 12.5px;
-      letter-spacing: 0.04em;
-      margin-bottom: 6px;
-      font-weight: 400;
-    }
- 
-    .role-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: linear-gradient(135deg, rgba(26,58,110,0.30), rgba(13,61,38,0.20));
-      border: 1px solid rgba(36,87,164,0.35);
-      color: #7ab8f5;
-      font-size: 11.5px;
-      font-weight: 600;
-      font-family: 'Syne', sans-serif;
-      padding: 5px 12px;
-      border-radius: 999px;
-      margin-bottom: 18px;
-      letter-spacing: 0.03em;
-    }
- 
-    .role-badge i { font-size: 10px; }
- 
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 7px;
-      margin-bottom: 20px;
-    }
- 
-    .skills span {
-      padding: 5px 11px;
-      border-radius: 999px;
-      background: rgba(15,28,46,0.85);
-      border: 1px solid rgba(36,87,164,0.20);
-      font-size: 11px;
-      color: #7da8cc;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      transition: 0.2s;
-    }
- 
-    .skills span:hover {
-      background: rgba(26,58,110,0.25);
-      border-color: rgba(36,87,164,0.45);
-      color: #a8ccee;
-    }
- 
-    .skills span.hot {
-      background: linear-gradient(135deg, rgba(26,58,110,0.35), rgba(13,61,38,0.30));
-      border: 1px solid rgba(36,87,164,0.50);
-      color: #90c8ff;
-      font-weight: 600;
-      position: relative;
-    }
- 
-    .skills span.hot::before {
-      content: '◆';
-      font-size: 7px;
-      margin-right: 4px;
-      color: #4eb8ff;
-      vertical-align: middle;
-    }
- 
-    .skills span.hot:hover {
-      background: linear-gradient(135deg, rgba(26,58,110,0.50), rgba(13,61,38,0.45));
-      border-color: rgba(36,87,164,0.75);
-      color: #b8dcff;
-    }
- 
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(36,87,164,0.25), rgba(30,138,80,0.18), transparent);
-      margin: 18px 0;
-    }
- 
-    .about {
-      font-size: 12.5px;
-      line-height: 1.85;
-      color: #8a9fc0;
-      margin-bottom: 22px;
-      text-align: left;
-    }
- 
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
- 
-    /* ── 3D Buttons ── */
-    .btn-3d {
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0;
-      padding: 0;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Syne', sans-serif;
-      letter-spacing: 0.03em;
-      color: #cdd9e5;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      cursor: pointer;
-      user-select: none;
-      background: linear-gradient(160deg, #2d333b 0%, #22272e 55%, #161b22 100%);
-      border: 1px solid rgba(99,110,123,0.40);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.07) inset,
-        0 -1px 0 rgba(0,0,0,0.35) inset,
-        0 5px 0 #0d1117,
-        0 7px 20px rgba(1,4,9,0.55),
-        0 2px 5px rgba(0,0,0,0.45);
-    }
- 
-    .btn-3d .btn-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      min-width: 48px;
-      height: 100%;
-      min-height: 46px;
-      font-size: 17px;
-      background: rgba(0,0,0,0.18);
-      border-right: 1px solid rgba(99,110,123,0.30);
-      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
-      flex-shrink: 0;
-      color: #adbac7;
-    }
- 
-    .btn-3d .btn-label {
-      flex: 1;
-      text-align: center;
-      padding: 13px 14px 13px 0;
-    }
- 
-    .btn-3d::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 45%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-      transform: skewX(-18deg);
-      transition: left 0.60s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .btn-3d:hover::before { left: 120%; }
- 
-    .btn-3d:hover {
-      transform: translateY(-3px);
-      background: linear-gradient(160deg, #373e47 0%, #2d333b 55%, #1c2128 100%);
-      border-color: rgba(139,148,158,0.55);
-      color: #e6edf3;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.09) inset,
-        0 7px 0 #0d1117,
-        0 14px 32px rgba(1,4,9,0.65),
-        0 4px 10px rgba(0,0,0,0.45);
-    }
- 
-    .btn-3d:hover .btn-icon { color: #e6edf3; }
- 
-    .btn-3d:active {
-      transform: translateY(3px) scale(0.99) !important;
-      box-shadow: none !important;
-    }
- 
-    /* ── CTA Green ── */
-    .cta {
-      margin-top: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 15px;
-      border-radius: 14px;
-      text-decoration: none;
-      color: #ffffff;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 13.5px;
-      letter-spacing: 0.05em;
-      background: linear-gradient(160deg, #238636 0%, #196127 50%, #0f3d1a 100%);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.10) inset,
-        0 -1px 0 rgba(0,0,0,0.35) inset,
-        0 6px 0 #082010,
-        0 10px 28px rgba(35,134,54,0.40),
-        0 3px 8px rgba(0,0,0,0.55);
-      border: 1px solid rgba(46,160,67,0.50);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
- 
-    .cta::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
-      transform: skewX(-20deg);
-      transition: left 0.5s ease;
-    }
-    .cta:hover::before { left: 120%; }
- 
-    .cta:hover {
-      transform: translateY(-3px);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.12) inset,
-        0 8px 0 #082010,
-        0 16px 38px rgba(35,134,54,0.50),
-        0 5px 12px rgba(0,0,0,0.55);
-    }
- 
-    .cta:active {
-      transform: translateY(3px);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.08) inset,
-        0 2px 0 #082010,
-        0 4px 12px rgba(35,134,54,0.25);
-    }
- 
-    /* ── Portfolio CTA (purple) ── */
-    .btn-portfolio {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      width: 100%;
-      padding: 0;
-      border-radius: 14px;
-      border: none;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 13.5px;
-      letter-spacing: 0.05em;
-      background: linear-gradient(160deg, #3a2d6e 0%, #2a1f55 50%, #1a1235 100%);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.10) inset,
-        0 -1px 0 rgba(0,0,0,0.35) inset,
-        0 6px 0 #0d0820,
-        0 10px 28px rgba(90,60,180,0.30),
-        0 3px 8px rgba(0,0,0,0.55);
-      border: 1px solid rgba(120,90,220,0.40);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      color: #c4b5fd;
-      text-decoration: none;
-    }
- 
-    .btn-portfolio .btn-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      min-width: 48px;
-      height: 100%;
-      min-height: 46px;
-      font-size: 17px;
-      background: rgba(0,0,0,0.18);
-      border-right: 1px solid rgba(120,90,220,0.25);
-      flex-shrink: 0;
-      color: #a78bfa;
-    }
- 
-    .btn-portfolio .btn-label {
-      flex: 1;
-      text-align: center;
-      padding: 13px 14px 13px 0;
-    }
- 
-    .btn-portfolio::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
-      transform: skewX(-20deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .btn-portfolio:hover::before { left: 120%; }
- 
-    .btn-portfolio:hover {
-      transform: translateY(-3px);
-      color: #ddd6fe;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.12) inset,
-        0 8px 0 #0d0820,
-        0 16px 38px rgba(90,60,180,0.40),
-        0 5px 12px rgba(0,0,0,0.55);
-    }
-    .btn-portfolio:hover .btn-icon { color: #ddd6fe; }
-    .btn-portfolio:active { transform: translateY(3px); box-shadow: none; }
- 
-    /* ── Certificates CTA (same as portfolio purple) ── */
-    .btn-certificates {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      width: 100%;
-      padding: 0;
-      border-radius: 14px;
-      border: none;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 13.5px;
-      letter-spacing: 0.05em;
-      background: linear-gradient(160deg, #3a2d6e 0%, #2a1f55 50%, #1a1235 100%);
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.10) inset,
-        0 -1px 0 rgba(0,0,0,0.35) inset,
-        0 6px 0 #0d0820,
-        0 10px 28px rgba(90,60,180,0.30),
-        0 3px 8px rgba(0,0,0,0.55);
-      border: 1px solid rgba(120,90,220,0.40);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      color: #c4b5fd;
-      text-decoration: none;
-    }
- 
-    .btn-certificates .btn-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      min-width: 48px;
-      height: 100%;
-      min-height: 46px;
-      font-size: 17px;
-      background: rgba(0,0,0,0.18);
-      border-right: 1px solid rgba(120,90,220,0.25);
-      flex-shrink: 0;
-      color: #a78bfa;
-    }
- 
-    .btn-certificates .btn-label {
-      flex: 1;
-      text-align: center;
-      padding: 13px 14px 13px 0;
-    }
- 
-    .btn-certificates::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
-      transform: skewX(-20deg);
-      transition: left 0.5s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .btn-certificates:hover::before { left: 120%; }
- 
-    .btn-certificates:hover {
-      transform: translateY(-3px);
-      color: #ddd6fe;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.12) inset,
-        0 8px 0 #0d0820,
-        0 16px 38px rgba(90,60,180,0.40),
-        0 5px 12px rgba(0,0,0,0.55);
-    }
-    .btn-certificates:hover .btn-icon { color: #ddd6fe; }
-    .btn-certificates:active { transform: translateY(3px); box-shadow: none; }
- 
-    footer {
-      margin-top: 18px;
-      color: #3d5070;
-      font-size: 11px;
-      letter-spacing: 0.05em;
-    }
- 
-    /* ══════════════════════
-       SHARED MODAL STYLES
-    ══════════════════════ */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-    }
- 
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
- 
-    .modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(4, 8, 16, 0.70);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
- 
-    .modal {
-      position: relative;
-      z-index: 101;
-      width: 480px;
-      max-width: 95vw;
-      max-height: 88vh;
-      overflow-y: auto;
-      border-radius: 22px;
-      background: rgba(9, 15, 26, 0.97);
-      border: 1px solid rgba(36,87,164,0.30);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 30px 80px rgba(0,0,0,0.80),
-        0 0 120px rgba(26,58,110,0.18);
-      padding: 32px 28px 28px;
-      transform: translateY(28px) scale(0.96);
-      transition: transform 0.40s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
-      opacity: 0;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(36,87,164,0.35) transparent;
-    }
- 
-    .modal-overlay.active .modal {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
- 
-    .modal::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 30px; right: 30px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(36,87,164,0.8), rgba(30,138,80,0.65), transparent);
-      border-radius: 999px;
-    }
- 
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
- 
-    .modal-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #e8edf5 40%, #a5b8d8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
- 
-    .modal-close {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid rgba(99,110,123,0.35);
-      background: rgba(255,255,255,0.05);
-      color: #8a9fc0;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
- 
-    .modal-close:hover {
-      background: rgba(255,255,255,0.10);
-      border-color: rgba(99,110,123,0.60);
-      color: #cdd9e5;
-      transform: rotate(90deg);
-    }
- 
-    .modal-subtitle {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      margin-bottom: 22px;
-    }
- 
-    .modal-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(36,87,164,0.25), rgba(30,138,80,0.18), transparent);
-      margin: 0 0 22px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* ── Section label for new/existing projects ── */
-    .portfolio-section-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      color: #3a5a80;
-      margin-bottom: 8px;
-      padding-left: 2px;
-    }
+<title>Hirushika Disanayake</title>
 
-    .portfolio-section-label.new {
-      color: #4a8aaa;
-    }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    .portfolio-section-gap {
-      height: 14px;
-    }
- 
-    /* ══════════════════════
-       PORTFOLIO ITEMS
-    ══════════════════════ */
-    .portfolio-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
- 
-    .portfolio-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(15,24,40,0.85);
-      border: 1px solid rgba(36,87,164,0.18);
-      text-decoration: none;
-      color: #cdd9e5;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.22s ease;
-    }
- 
-    .portfolio-item::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 45%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-      transform: skewX(-18deg);
-      transition: left 0.55s ease;
-      pointer-events: none;
-    }
-    .portfolio-item:hover::before { left: 120%; }
- 
-    .portfolio-item:hover {
-      background: rgba(26,46,80,0.70);
-      border-color: rgba(36,87,164,0.42);
-      transform: translateX(4px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.35), -3px 0 0 rgba(36,87,164,0.5);
-    }
- 
-    .portfolio-item-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
- 
-    .portfolio-item-icon.icon-1 {
-      background: linear-gradient(135deg, rgba(26,58,110,0.50), rgba(13,61,38,0.35));
-      border: 1px solid rgba(36,87,164,0.35);
-      color: #7ab8f5;
-    }
-    .portfolio-item-icon.icon-2 {
-      background: linear-gradient(135deg, rgba(13,61,38,0.50), rgba(26,58,110,0.35));
-      border: 1px solid rgba(30,138,80,0.35);
-      color: #5dd496;
-    }
-    .portfolio-item-icon.icon-3 {
-      background: linear-gradient(135deg, rgba(80,40,100,0.45), rgba(26,58,110,0.35));
-      border: 1px solid rgba(120,80,180,0.35);
-      color: #b89cf5;
-    }
-    .portfolio-item-icon.icon-4 {
-      background: linear-gradient(135deg, rgba(100,60,20,0.45), rgba(13,61,38,0.35));
-      border: 1px solid rgba(180,120,40,0.35);
-      color: #f5c55d;
-    }
- 
-    .portfolio-item-info { flex: 1; min-width: 0; }
- 
-    .portfolio-item-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      color: #cdd9e5;
-      margin-bottom: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
- 
-    .portfolio-item-desc {
-      font-size: 11.5px;
-      color: #5a7a9a;
-      letter-spacing: 0.02em;
-    }
- 
-    .portfolio-item-arrow {
-      color: #3a5575;
-      font-size: 13px;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
- 
-    .portfolio-item:hover .portfolio-item-arrow {
-      color: #7ab8f5;
-      transform: translateX(3px);
-    }
- 
-    .modal-footer-note {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 11px;
-      color: #2e4560;
-      letter-spacing: 0.03em;
-    }
- 
-    /* ══════════════════════
-       CERTIFICATE ITEMS — now matches portfolio blue style
-    ══════════════════════ */
-    .cert-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
- 
-    .cert-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 13px 15px;
-      border-radius: 14px;
-      background: rgba(15,24,40,0.85);
-      border: 1px solid rgba(36,87,164,0.18);
-      text-decoration: none;
-      color: #cdd9e5;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.22s ease;
-    }
- 
-    .cert-item::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 45%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-      transform: skewX(-18deg);
-      transition: left 0.55s ease;
-      pointer-events: none;
-    }
-    .cert-item:hover::before { left: 120%; }
- 
-    .cert-item:hover {
-      background: rgba(26,46,80,0.70);
-      border-color: rgba(36,87,164,0.42);
-      transform: translateX(4px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.35), -3px 0 0 rgba(36,87,164,0.5);
-    }
- 
-    .cert-badge {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-      position: relative;
-    }
- 
-    /* Per-cert badge colors — blues/greens only */
-    .cert-badge.sap {
-      background: linear-gradient(135deg, rgba(0,105,180,0.40), rgba(0,60,120,0.30));
-      border: 1px solid rgba(0,140,220,0.40);
-      color: #60b8ff;
-    }
-    .cert-badge.ai {
-      background: linear-gradient(135deg, rgba(26,58,110,0.50), rgba(13,61,38,0.35));
-      border: 1px solid rgba(36,87,164,0.45);
-      color: #7ab8f5;
-    }
-    .cert-badge.lakehouse {
-      background: linear-gradient(135deg, rgba(0,180,160,0.35), rgba(0,120,100,0.25));
-      border: 1px solid rgba(0,200,170,0.40);
-      color: #40d8c0;
-    }
-    .cert-badge.architect {
-      background: linear-gradient(135deg, rgba(13,61,38,0.50), rgba(26,58,110,0.35));
-      border: 1px solid rgba(30,138,80,0.40);
-      color: #5dd496;
-    }
-    .cert-badge.admin {
-      background: linear-gradient(135deg, rgba(80,40,100,0.45), rgba(26,58,110,0.35));
-      border: 1px solid rgba(120,80,180,0.40);
-      color: #b89cf5;
-    }
-    .cert-badge.microsoft {
-      background: linear-gradient(135deg, rgba(0,114,198,0.40), rgba(0,70,140,0.30));
-      border: 1px solid rgba(0,150,220,0.45);
-      color: #41b3ff;
-    }
- 
-    .cert-info { flex: 1; min-width: 0; }
- 
-    .cert-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 12.5px;
-      color: #cdd9e5;
-      margin-bottom: 3px;
-      line-height: 1.3;
-    }
- 
-    .cert-issuer {
-      font-size: 11px;
-      color: #5a7a9a;
-      letter-spacing: 0.03em;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
- 
-    .cert-issuer i { font-size: 9px; }
- 
-    .cert-arrow {
-      color: #3a5575;
-      font-size: 12px;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
- 
-    .cert-item:hover .cert-arrow {
-      color: #7ab8f5;
-      transform: translateX(3px);
-    }
- 
-    /* Verified badge pill — blue tint */
-    .cert-verified {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(36,87,164,0.12);
-      border: 1px solid rgba(36,87,164,0.30);
-      color: #7ab8f5;
-      font-size: 9.5px;
-      font-weight: 600;
-      font-family: 'Syne', sans-serif;
-      padding: 2px 7px;
-      border-radius: 999px;
-      letter-spacing: 0.04em;
-      margin-top: 4px;
-      width: fit-content;
-    }
- 
-    .cert-verified i { font-size: 8px; }
- 
-    .cert-modal-footer {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 11px;
-      color: #2e4560;
-      letter-spacing: 0.03em;
-    }
-  </style>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
- 
-  <!-- ══ MAIN CARD ══ -->
-  <div class="card" id="mainCard">
- 
-    <div class="avatar-wrap">
-      <img
-        src="data:image/jpeg;base64,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"
-        alt="Thilina Prasad"
-        class="profile"
-      >
-      <div class="status"></div>
-    </div>
- 
-    <h1>Thilina Prasad</h1>
-    <div class="role">BI Engineer &nbsp;•&nbsp; Data Engineer</div>
- 
-    <div class="role-badge">
-      <i class="fas fa-database"></i>
-      Data Platform &amp; Analytics Expert
-    </div>
- 
-    <div class="skills">
-      <span>Databricks LakeHouse</span>
-      <span>Power BI</span>
-      <span>Analytical Engineering</span>
-      <span>RPA</span>
-      <span>Metadata Management</span>
-      <span>Looker</span>
-      <span>Tableau</span>
-      <span>Azure Data Lake</span>
-      <span>Spark SQL</span>
-      <span>ADF</span>
-      <span>Fivetran</span>
-      <span>SSIS</span>
-      <span>DAX / MDX / M</span>
-      <span>SSAS / AAS</span>
-      <span>PostgreSQL</span>
-      <span>Oracle</span>
-      <span>MS SQL</span>
-      <span>Dataverse</span>
-    </div>
- 
-    <div class="divider"></div>
- 
-    <div class="about">
-      Experienced data platform professional with over 5 years across FMCG — Production, Finance, Sales &amp; Marketing, and HR. Currently focused on Databricks LakeHouse platform, driving Analytical Engineering and Power BI reporting pipelines. Passionate about RPA, metadata-driven architectures, data modeling, and low-code solutions.
-    </div>
- 
-    <div class="links">
-      <a class="btn-3d" href="https://www.linkedin.com/in/thilina-prasad-b8aa8b1ab/" target="_blank">
-        <span class="btn-icon"><i class="fab fa-linkedin"></i></span>
-        <span class="btn-label">LinkedIn</span>
-      </a>
-      <a class="btn-3d" href="https://github.com/" target="_blank">
-        <span class="btn-icon"><i class="fab fa-github"></i></span>
-        <span class="btn-label">GitHub</span>
-      </a>
-      <a class="btn-3d" href="mailto:info.thilinaprasad@gmail.com">
-        <span class="btn-icon"><i class="fas fa-envelope"></i></span>
-        <span class="btn-label">Email Me</span>
-      </a>
-      <a class="btn-3d" href="https://wa.me/94775140144" target="_blank">
-        <span class="btn-icon"><i class="fab fa-whatsapp"></i></span>
-        <span class="btn-label">WhatsApp</span>
-      </a>
-    </div>
- 
-    <!-- Portfolio button -->
-    <button class="btn-portfolio" onclick="openPortfolio()">
-      <span class="btn-icon"><i class="fas fa-briefcase"></i></span>
-      <span class="btn-label">View Portfolio</span>
-    </button>
- 
-    <!-- Certificates button -->
-    <button class="btn-certificates" onclick="openCertificates()">
-      <span class="btn-icon"><i class="fas fa-certificate"></i></span>
-      <span class="btn-label">Certificates &amp; Badges</span>
-    </button>
- 
-    <footer>© 2026 Thilina Prasad</footer>
- 
-  </div><!-- end .card -->
- 
- 
-  <!-- ══ PORTFOLIO MODAL ══ -->
-  <div class="modal-overlay" id="portfolioModal" onclick="handleOverlayClick(event,'portfolioModal')">
-    <div class="modal-backdrop"></div>
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">Portfolio</div>
-        <button class="modal-close" onclick="closePortfolio()"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-subtitle">Data &amp; BI Engineering Projects — Google Drive</div>
-      <div class="modal-divider"></div>
-      <div class="portfolio-grid">
 
-        <!-- ── NEW PROJECTS ── -->
-        <div class="portfolio-section-label new">Latest</div>
+<div class="container py-4">
 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1kOsEESo-DN69XvKMPM8nwoUY85QHx_fp/view?usp=drive_link" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-1"><i class="fas fa-house"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Home Page</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
+<div class="profile-card text-center">
 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1b5VGNATa2NTIEi8zkn3zDE0qRYAEUO2F/view?usp=drive_link" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-2"><i class="fas fa-chart-line"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Sales Over Time</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
+<img src="assets/profile.png"
+class="profile-img">
 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1cDF5saJ3yG48Y9tHoLqOynVmRn8fF6g0/view?usp=drive_link" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-3"><i class="fas fa-magnifying-glass-chart"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Detail Sales Insight</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
+<h1>Hirushika</h1>
+<h2>Disanayake</h2>
 
-        <!-- ── EXISTING PROJECTS ── -->
-        <div class="portfolio-section-gap"></div>
-        <div class="portfolio-section-label">Previous</div>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1VlD0JaM38ZqGklQKWfys6gmNEovDqvhs/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-1"><i class="fas fa-chart-bar"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 01</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1_qMC_p_rBvXoL_ewy8Um4n8E5wIP0je1/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-2"><i class="fas fa-database"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 02</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1S5aivijPArjKPc04IVVl7OzW35_eb9fZ/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-3"><i class="fas fa-cogs"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 03</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1ucakLgl8FO4ZRUshBAsdqK76aY-duruX/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-4"><i class="fas fa-layer-group"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 04</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1XRvV9SFSQZaYl5kMzAjcOUQGEnbaT8TA/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-1"><i class="fas fa-chart-line"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 05</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1eJ8hw1Xeg0fhsm4rUzwllmON0Jw8jxu4/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-2"><i class="fas fa-server"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 06</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="portfolio-item" href="https://drive.google.com/file/d/1O8Okg7Oz3Ji_4gjMNXASBs39dmB3O0-e/view" target="_blank" rel="noopener">
-          <div class="portfolio-item-icon icon-3"><i class="fas fa-project-diagram"></i></div>
-          <div class="portfolio-item-info">
-            <div class="portfolio-item-title">Project 07</div>
-            <div class="portfolio-item-desc">Open in Google Drive &nbsp;·&nbsp; PDF</div>
-          </div>
-          <div class="portfolio-item-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-      </div>
-      <div class="modal-footer-note">Click any project to open it in Google Drive</div>
-    </div>
-  </div>
- 
- 
-  <!-- ══ CERTIFICATES MODAL ══ -->
-  <div class="modal-overlay" id="certModal" onclick="handleOverlayClick(event,'certModal')">
-    <div class="modal-backdrop"></div>
-    <div class="modal">
- 
-      <div class="modal-header">
-        <div class="modal-title">Certificates &amp; Badges</div>
-        <button class="modal-close" onclick="closeCertificates()"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-subtitle">Verified professional credentials &amp; platform badges</div>
-      <div class="modal-divider"></div>
- 
-      <div class="cert-grid">
- 
-        <a class="cert-item" href="https://drive.google.com/file/d/1hgtUTmY3O5oxjWuBTHtuUSIAOZNT1Kn-/view" target="_blank" rel="noopener">
-          <div class="cert-badge sap"><i class="fas fa-brain"></i></div>
-          <div class="cert-info">
-            <div class="cert-title">SAP — Data Science</div>
-            <div class="cert-issuer"><i class="fas fa-building"></i> SAP &nbsp;·&nbsp; Google Drive · PDF</div>
-            <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-          </div>
-          <div class="cert-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="cert-item" href="https://credentials.databricks.com/2747621a-40f8-4273-aeef-7e6a5fd288e0#acc.M6hYZdBK" target="_blank" rel="noopener">
-          <div class="cert-badge ai"><i class="fas fa-robot"></i></div>
-          <div class="cert-info">
-            <div class="cert-title">Databricks — AI Fundamentals</div>
-            <div class="cert-issuer"><i class="fas fa-award"></i> Databricks &nbsp;·&nbsp; Credential Link</div>
-            <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-          </div>
-          <div class="cert-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="cert-item" href="https://credentials.databricks.com/59e37a67-1c6a-47c0-acc6-f5d72cc1e0ae#acc.DhVTm2Yp" target="_blank" rel="noopener">
-          <div class="cert-badge lakehouse"><i class="fas fa-warehouse"></i></div>
-          <div class="cert-info">
-            <div class="cert-title">Databricks — Lakehouse Fundamentals</div>
-            <div class="cert-issuer"><i class="fas fa-award"></i> Databricks &nbsp;·&nbsp; Credential Link</div>
-            <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-          </div>
-          <div class="cert-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="cert-item" href="https://credentials.databricks.com/ba27ca87-1216-4cca-872b-55d55eef0017#acc.3RNXexri" target="_blank" rel="noopener">
-          <div class="cert-badge architect"><i class="fas fa-drafting-compass"></i></div>
-          <div class="cert-info">
-            <div class="cert-title">Azure Databricks Platform Architect</div>
-            <div class="cert-issuer"><i class="fas fa-award"></i> Databricks &nbsp;·&nbsp; Credential Link</div>
-            <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-          </div>
-          <div class="cert-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="cert-item" href="https://credentials.databricks.com/99ee9c5d-9453-4303-a1ea-517a647c0576#acc.8Y9bA4fZ" target="_blank" rel="noopener">
-          <div class="cert-badge admin"><i class="fas fa-shield-halved"></i></div>
-          <div class="cert-info">
-            <div class="cert-title">Databricks — Platform Administrator</div>
-            <div class="cert-issuer"><i class="fas fa-award"></i> Databricks &nbsp;·&nbsp; Credential Link</div>
-            <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-          </div>
-          <div class="cert-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-        <a class="cert-item" href="https://learn.microsoft.com/en-us/users/thilinaprasad-3802/" target="_blank" rel="noopener">
-          <div class="cert-badge microsoft"><i class="fab fa-microsoft"></i></div>
-          <div class="cert-info">
-            <div class="cert-title">Microsoft Learn — Badges &amp; Achievements</div>
-            <div class="cert-issuer"><i class="fas fa-award"></i> Microsoft &nbsp;·&nbsp; learn.microsoft.com</div>
-            <div class="cert-verified"><i class="fas fa-check-circle"></i> Verified</div>
-          </div>
-          <div class="cert-arrow"><i class="fas fa-arrow-right"></i></div>
-        </a>
- 
-      </div>
- 
-      <div class="cert-modal-footer">Click any badge to view the verified credential</div>
-    </div>
-  </div>
- 
- 
-  <script>
-    function openPortfolio() {
-      document.getElementById('portfolioModal').classList.add('active');
-      document.getElementById('mainCard').classList.add('blurred');
-      document.body.style.overflow = 'hidden';
-    }
-    function closePortfolio() {
-      document.getElementById('portfolioModal').classList.remove('active');
-      document.getElementById('mainCard').classList.remove('blurred');
-      document.body.style.overflow = '';
-    }
-    function openCertificates() {
-      document.getElementById('certModal').classList.add('active');
-      document.getElementById('mainCard').classList.add('blurred');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeCertificates() {
-      document.getElementById('certModal').classList.remove('active');
-      document.getElementById('mainCard').classList.remove('blurred');
-      document.body.style.overflow = '';
-    }
-    function handleOverlayClick(e, id) {
-      if (e.target === document.getElementById(id) ||
-          e.target.classList.contains('modal-backdrop')) {
-        if (id === 'portfolioModal') closePortfolio();
-        else closeCertificates();
-      }
-    }
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') { closePortfolio(); closeCertificates(); }
-    });
-  </script>
- 
+<p>English Tutor for Kids ❤️</p>
+
+<button class="btn register-btn"
+data-bs-toggle="modal"
+data-bs-target="#registerModal">
+Register For Class
+</button>
+
+<a href="https://wa.me/94702087853"
+class="btn whatsapp-btn mt-2">
+WhatsApp: 070 20 87 853
+</a>
+
+</div>
+
+<div class="row mt-4">
+
+<div class="col-6">
+<div class="feature-box">
+🎥
+<h6>Classroom Moments</h6>
+<p>Videos & class activities</p>
+</div>
+</div>
+
+<div class="col-6">
+<div class="feature-box">
+⭐
+<h6>Kid-Friendly Learning</h6>
+<p>Games & stories</p>
+</div>
+</div>
+
+<div class="col-6 mt-3">
+<div class="feature-box">
+📚
+<h6>All Grades</h6>
+<p>Primary school students</p>
+</div>
+</div>
+
+<div class="col-6 mt-3">
+<div class="feature-box">
+📞
+<h6>Easy Inquiries</h6>
+<p>Quick WhatsApp support</p>
+</div>
+</div>
+
+</div>
+
+<h4 class="text-center mt-5">
+Follow the Fun 🎉
+</h4>
+
+<a href="https://www.tiktok.com/@hirushika_dissanayake"
+class="social-btn tiktok">
+TikTok
+</a>
+
+<a href="https://www.facebook.com/share/17jXEbGbZA/"
+class="social-btn facebook">
+Facebook
+</a>
+
+<a href="https://wa.me/94702087853"
+class="social-btn whatsapp">
+WhatsApp
+</a>
+
+<div class="video-section mt-5">
+
+<h4>🎥 Classroom Moments</h4>
+
+<video controls width="100%">
+<source src="assets/videos/class1.mp4">
+</video>
+
+</div>
+
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade"
+id="registerModal">
+
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5>Class Registration</h5>
+</div>
+
+<div class="modal-body">
+
+<form id="registerForm">
+
+<input
+type="text"
+class="form-control mb-3"
+placeholder="Child Name"
+name="childName"
+required>
+
+<input
+type="text"
+class="form-control mb-3"
+placeholder="School"
+name="school"
+required>
+
+<select
+class="form-control mb-3"
+name="grade"
+required>
+
+<option value="">
+Select Grade
+</option>
+
+<option>Grade 1</option>
+<option>Grade 2</option>
+<option>Grade 3</option>
+<option>Grade 4</option>
+<option>Grade 5</option>
+<option>Grade 6</option>
+
+</select>
+
+<input
+type="tel"
+class="form-control mb-3"
+placeholder="Parent Mobile Number"
+name="mobile"
+required>
+
+<div class="d-flex gap-2">
+
+<button
+type="submit"
+class="btn btn-success w-100">
+Save
+</button>
+
+<button
+type="button"
+class="btn btn-secondary w-100"
+data-bs-dismiss="modal">
+Cancel
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
